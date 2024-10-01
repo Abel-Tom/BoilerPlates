@@ -67,11 +67,11 @@ class BookAPIView(APIView):
 
     def get(self, request):
         title = request.GET.get('title',None)
-        author = request.GET.get('author')
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
-        page = request.GET.get('page')
-        per_page = request.GET.get('per_page')
+        author = request.GET.get('author', None)
+        start_date = request.GET.get('start_date', None)
+        end_date = request.GET.get('end_date', None)
+        page = request.GET.get('page', None)
+        per_page = request.GET.get('per_page', None)
 
 
         q = Q()
