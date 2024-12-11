@@ -90,7 +90,7 @@ class SomethingViewSet(viewsets.ModelViewSet):
 
     serializer_class = SomethingSerializer
     queryset = Something.objects.all()
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):  
         queryset = super().get_queryset().filter(user=self.request.user)
@@ -109,14 +109,33 @@ class SomethingViewSet(viewsets.ModelViewSet):
     #     print(request.data)
     #     return Response({'message': 'something'})
 
-class SomeAPIView(APIView):
+class SomeAPIView(generics.GenericAPIView):
+    serializer_class = SomethingSerializer
+    queryset = Something.objects.all()
 
     def get(self, request):
-        print('request. ', request.data)
-
-        return Response({'message': 'something'})
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def post(self, request):
+        print('request. ', request.data)
         return Response({'message': 'something'})
+    
+    def patch(self, request):
+        return Response({'':1}) 
+    def put(self, request):
+        return Response({'':1})
+    def delete(self, request):
+        return Response({'':1})
+    
+
+
+
+
+
+
+
+
 
 
