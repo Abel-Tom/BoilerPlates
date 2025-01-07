@@ -2,29 +2,34 @@ from rest_framework import viewsets
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.db.models import Q
 from django.core.paginator import Paginator
 
 from .models import Book, Something
 from .serializers import BookResponseSerializer, BookSerializer, SomethingSerializer, SomethingElseSerializer
+from rest_framework.pagination import PageNumberPagination
+
+class MyModelPagination(PageNumberPagination):
+        page_size = 2
 
 class MyModelViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.all()
+    queryset = Book.objects.all().order_by('id')
     serializer_class = BookSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        paginator = MyModelPagination()
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = self.get_serializer(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
     
-
-    def get_queryset(self):  
-        queryset = super().get_queryset().filter(user=self.request.user)
-
-        paginator = Paginator(queryset, per_page=2)
-        page = paginator.page(2).object_list
-        print('page ', page)
-        return queryset
-
-
 
 
 class BookAPIView(APIView):

@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
-    'versatileimagefield',
     'boilerplate',
 ]
 
@@ -142,23 +141,13 @@ REST_FRAMEWORK = {
     ],
 }
 
-VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
-    'product_headshot': [
-        ('full_size', 'url'),
-        ('thumbnail', 'thumbnail__100x100'),
-        ('test_square_crop', 'crop__400x400'),
-        ('small_square_crop', 'crop__50x50')
-    ]
-}
+
 
 CORS_ALLOWED_ORIGINS = [
-    "https://www.test-cors.org",
+    "https://test-cors.org",
 ]
 
 
-CSRF_TRUSTED_ORIGINS = [
-    'www.test2-cors.org',
-]
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -168,4 +157,8 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False
 }
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://test2-cors.org',
+]
